@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.ConvertAPI
 {
     internal class iconsAPI
     {
         public iconsAPI() { }
 
-        public void Convert(string file,string BEUIFolder,string vanillaBase)
+        public void Convert(string file, string BEUIFolder, string vanillaBase)
         {
             int originalSize = 256;
             int iconSize = 9;
@@ -48,7 +48,7 @@ namespace RE_JavaTexturePackage2NBTP
                 //Line 1
                 for (int i = 0; i < 18 + 1; i++)
                 {
-                    int x = (int)(16 * Scale) + (iconSize) * i;
+                    int x = (int)(16 * Scale) + iconSize * i;
                     int y = 0;
 
                     Rectangle smallImageRect = new Rectangle(x, y, iconSize, iconSize);
@@ -123,7 +123,7 @@ namespace RE_JavaTexturePackage2NBTP
                 // Line 2
                 for (int i = 0; i < 12 + 1; i++)
                 {
-                    int x = (int)(16 * Scale) + (iconSize) * i;
+                    int x = (int)(16 * Scale) + iconSize * i;
                     int y = (int)(9 * Scale);
 
                     Rectangle smallImageRect = new Rectangle(x, y, iconSize, iconSize);
@@ -179,7 +179,7 @@ namespace RE_JavaTexturePackage2NBTP
                 //Line 3
                 for (int i = 0; i < 2 + 1; i++)
                 {
-                    int x = (int)(16 * Scale) + (iconSize) * i;
+                    int x = (int)(16 * Scale) + iconSize * i;
                     int y = (int)(18 * Scale);
 
                     Rectangle smallImageRect = new Rectangle(x, y, iconSize, iconSize);
@@ -205,7 +205,7 @@ namespace RE_JavaTexturePackage2NBTP
                 // Line 4
                 for (int i = 0; i < 12 + 1; i++)
                 {
-                    int x = (int)(16 * Scale) + (iconSize) * i;
+                    int x = (int)(16 * Scale) + iconSize * i;
                     int y = (int)(27 * Scale);
 
                     Rectangle smallImageRect = new Rectangle(x, y, iconSize, iconSize);

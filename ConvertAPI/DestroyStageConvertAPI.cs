@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.ConvertAPI
 {
     internal class DestroyStageConvertAPI
     {
-        public DestroyStageConvertAPI() 
-        { 
+        public DestroyStageConvertAPI()
+        {
         }
         public void Convert(string file)
         {
@@ -29,7 +29,7 @@ namespace RE_JavaTexturePackage2NBTP
                         }
                     }
                 }
-                image.Save(file + ".rep",ImageFormat.Png);
+                image.Save(file + ".rep", ImageFormat.Png);
             }
         }
     }

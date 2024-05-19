@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.SDK
 {
     internal class ZipHelper
     {
@@ -19,7 +19,7 @@ namespace RE_JavaTexturePackage2NBTP
             }
 
             // 解压缩文件
-            
+
         }
 
         public static bool IsValid(string zipFilePath)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.ConvertAPI
 {
 
     public class RenameException : Exception
@@ -16,18 +16,18 @@ namespace RE_JavaTexturePackage2NBTP
     }
     internal class RenameAPI
     {
-        public RenameAPI() 
+        public RenameAPI()
         {
         }
-        
+
         public string Convert(string source)
         {
             string ret = "";
-            if (Converter.TryGetValue(source,out ret)) return ret;
+            if (Converter.TryGetValue(source, out ret)) return ret;
             throw new RenameException($"[RenameAPI - Error] 不存在 {source} 作为转换项");
         }
 
-        Dictionary<string, string> Converter = new Dictionary<string, string>() 
+        Dictionary<string, string> Converter = new Dictionary<string, string>()
         {
             {"pack.png", "pack_icon.png"},
 
@@ -1051,6 +1051,9 @@ namespace RE_JavaTexturePackage2NBTP
             {"/block/stripped_mangrove_log.png", "stripped_mangrove_log_side.png"},
             {"/block/cherry_log.png", "cherry_log_side.png"},
             {"/block/stripped_cherry_log.png", "stripped_cherry_log_side.png"},
+
+            //font
+            {"ascii.png","default8.png" }
         };
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.SDK
 {
     public static class ListExtend
     {

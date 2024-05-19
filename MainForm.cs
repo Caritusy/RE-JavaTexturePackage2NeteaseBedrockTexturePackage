@@ -1,16 +1,23 @@
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Windows.Forms;
+using RE_JavaTexturePackage2NBTP.SDK;
 
 namespace RE_JavaTexturePackage2NBTP
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         public List<JavaPackage> JavaPackages = new List<JavaPackage>();
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             listBox1.DataSource = JavaPackages;
             listBox1.DisplayMember = "Name";
+
+            this.DragEnter += FileDragEnter;
+            this.DragDrop += FileDragDrop;
         }
 
         private void Refresh()
@@ -136,6 +143,31 @@ namespace RE_JavaTexturePackage2NBTP
                 MessageBox.Show(ex.Message);
                 Console.WriteLine(ex);
             }
+        }
+
+        private void FileDragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void FileDragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            // 处理拖放的文件
+            foreach (string file in files)
+            {
+                if (ZipHelper.IsValid(file)) continue;
+                JavaPackages.Add(new JavaPackage(file.Replace('\\', '/')));
+            }
+            Refresh();
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.ConvertAPI
 {
     internal class widgetsAPI
     {
         public widgetsAPI() { }
-        public void Convert(string file,string BEUIFolder)
+        public void Convert(string file, string BEUIFolder)
         {
             using (Bitmap icons = new Bitmap(file))
             {
@@ -26,7 +26,7 @@ namespace RE_JavaTexturePackage2NBTP
                 hotbarSelectedSize = (int)(hotbarSelectedSize * Scale);
                 for (int i = 0; i < 8 + 1; i++)
                 {
-                    int x = (hotbarWid) * i;
+                    int x = hotbarWid * i;
                     int y = 0;
 
                     Rectangle smallImageRect = new Rectangle(x, y, hotbarWid, hotbarHid);
@@ -42,7 +42,7 @@ namespace RE_JavaTexturePackage2NBTP
 
                 for (int i = 0; i < 0 + 1; i++)
                 {
-                    int x = (hotbarWid) * i;
+                    int x = hotbarWid * i;
                     int y = (int)(Scale * 22);
 
                     Rectangle smallImageRect = new Rectangle(x, y, hotbarSelectedSize + (int)(1 * Scale), hotbarSelectedSize);

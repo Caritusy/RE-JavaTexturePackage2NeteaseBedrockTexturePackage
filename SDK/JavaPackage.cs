@@ -5,27 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.SDK
 {
     public class JavaPackage
     {
-        public class PackInfo
+        public class PackInfo //这是用于加载pack.mcmeta信息的类
         {
             public Pack pack { get; set; }
         }
 
-        public class Pack
+        public class Pack //同上
         {
             public int pack_format { get; set; }
             public string description { get; set; }
         }
 
-        public JavaPackage(string path)
+        public JavaPackage(string path) //初始化，引入参数路径
         {
             Path = path;
-            MD5 = Utils.CalculateMD5(Path);
+            MD5 = Utils.CalculateMD5(Path); //防重复用计算MD5(虽然好像没啥用)
             TempPath = $"{System.IO.Path.GetTempPath()}/REJTP2BTP-{MD5}/";
-            ZipHelper.Extract(Path,TempPath);
+            ZipHelper.Extract(Path, TempPath);
             packInfo = JsonConvert.DeserializeObject<PackInfo>(File.ReadAllText($"{TempPath}/pack.mcmeta"));
             IsSound = Directory.Exists(SoundFolder);
             IsTexture = Directory.Exists(TextureFolder);
@@ -41,9 +41,9 @@ namespace RE_JavaTexturePackage2NBTP
 
         public string SoundFolder
         {
-            get 
+            get
             {
-                return $"{TempPath}/assets/minecraft/sounds/";
+                return $"{TempPath}/assets/minecraft/sounds/"; //获取音频文件夹
             }
         }
 
@@ -51,11 +51,11 @@ namespace RE_JavaTexturePackage2NBTP
         {
             get
             {
-                return $"{TempPath}/assets/minecraft/textures/";
+                return $"{TempPath}/assets/minecraft/textures/"; //获取材质文件夹
             }
         }
 
-        public string STName
+        public string STName //获取包类型
         {
             get
             {
@@ -67,9 +67,9 @@ namespace RE_JavaTexturePackage2NBTP
             }
         }
 
-        public string Name
+        public string Name //名字
         {
-            get 
+            get
             {
                 return STName + System.IO.Path.GetFileName(Path);
             }

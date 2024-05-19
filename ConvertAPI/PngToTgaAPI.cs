@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RE_JavaTexturePackage2NBTP.SDK;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.ConvertAPI
 {
     internal class PngToTgaAPI
     {
@@ -19,10 +20,10 @@ namespace RE_JavaTexturePackage2NBTP
         {
             try
             {
-                Utils.ExportTGA((Bitmap)Image.FromFile(file),file + ".rep");
+                Utils.ExportTGA((Bitmap)Image.FromFile(file), file + ".rep");
                 return true;
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Console.WriteLine($"[PngToTgaAPI - Error] {e}");
                 return false;

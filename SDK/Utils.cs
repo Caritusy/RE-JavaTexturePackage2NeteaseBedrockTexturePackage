@@ -7,24 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.SDK
 {
     internal class Utils
     {
         public static string GetGamePath()
         {
-			RegistryKey key = null;
-			try
-			{
-				key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\MCLauncher", false);
-			}
-			finally
-			{
-				if (key == null)
-				{
-					key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\PC4399_MCLauncher", false);
-				}
-			}
+            RegistryKey key = null;
+            try
+            {
+                key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\MCLauncher", false);
+            }
+            finally
+            {
+                if (key == null)
+                {
+                    key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\PC4399_MCLauncher", false);
+                }
+            }
             if (key == null)
             {
                 key.Close();
@@ -34,7 +34,7 @@ namespace RE_JavaTexturePackage2NBTP
             key.Close();
             if (string.IsNullOrEmpty(path)) return null;
             else return path + "\\windowsmc";
-		}
+        }
 
         public static string CalculateMD5(object obj)
         {
@@ -65,9 +65,9 @@ namespace RE_JavaTexturePackage2NBTP
 
         public static void ExportTGA(Bitmap bitmap, string filePath)
         {
-            using (var stream = System.IO.File.Open(filePath, System.IO.FileMode.Create))
+            using (var stream = File.Open(filePath, FileMode.Create))
             {
-                using (var writer = new System.IO.BinaryWriter(stream))
+                using (var writer = new BinaryWriter(stream))
                 {
                     writer.Write((byte)0); // ID length
                     writer.Write((byte)0); // Color map type
@@ -97,5 +97,7 @@ namespace RE_JavaTexturePackage2NBTP
                 }
             }
         }
+
+        
     }
 }

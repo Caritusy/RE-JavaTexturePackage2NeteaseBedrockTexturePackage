@@ -4,8 +4,9 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using RE_JavaTexturePackage2NBTP.ConvertAPI;
 
-namespace RE_JavaTexturePackage2NBTP
+namespace RE_JavaTexturePackage2NBTP.SDK
 {
     internal class PackageConverter
     {
@@ -30,7 +31,7 @@ namespace RE_JavaTexturePackage2NBTP
 
         public string BlockBase
         {
-            get 
+            get
             {
                 if (currentPackage.packInfo.pack.pack_format > 6)
                 {
@@ -52,7 +53,7 @@ namespace RE_JavaTexturePackage2NBTP
             }
         }
 
-        public PackageConverter(string BEPath,JavaPackage pck)
+        public PackageConverter(string BEPath, JavaPackage pck)
         {
             this.BEPath = BEPath;
             if (!Directory.Exists(DataPath) || !Directory.Exists(VanillaPath))
@@ -71,12 +72,12 @@ namespace RE_JavaTexturePackage2NBTP
                     string FileName = Path.GetFileName(block);
                     if (FileName.EndsWith(".rep")) continue;
                     try
-                    {     
+                    {
                         if (!File.Exists(TextureBase + "/blocks/" + FileName))
                         {
                             FileName = rAPI.Convert(FileName);
                         }
-                        File.Copy(block, TextureBase + "/blocks/" + FileName,true);
+                        File.Copy(block, TextureBase + "/blocks/" + FileName, true);
                         sucCount++;
                         Console.WriteLine($"[ConvertAPI - Info] 成功 {block}");
                     }
@@ -96,7 +97,7 @@ namespace RE_JavaTexturePackage2NBTP
                         if (p2taAPI.Contains(FileName))
                         {
                             p2taAPI.Convert(block);
-                            File.Copy(block + ".rep", TextureBase + "/blocks/" + FileName.Replace(".png",".tga"), true);
+                            File.Copy(block + ".rep", TextureBase + "/blocks/" + FileName.Replace(".png", ".tga"), true);
                             sucCount++;
                             Console.WriteLine($"[ConvertAPI - Info] 成功 {block}");
                         }
@@ -105,7 +106,7 @@ namespace RE_JavaTexturePackage2NBTP
                     catch (Exception ex)
                     {
                         failCount++;
-                        Console.WriteLine(ex); 
+                        Console.WriteLine(ex);
                     }
 
                 }
@@ -190,16 +191,27 @@ namespace RE_JavaTexturePackage2NBTP
                         sucCount++;
                         Console.WriteLine($"[ConvertAPI - Info] 成功 {armor}");
                     }
-                    catch (RenameException ex)
+                    catch (Exception ex)
                     {
-                        if (p2taAPI.Contains(FileName))
+                        failCount++;
+                        Console.WriteLine(ex);
+                    }
+
+                }
+
+                foreach (string armor in Directory.GetFiles(currentPackage.TextureFolder + "/font/"))
+                {
+                    string FileName = Path.GetFileName(armor);
+                    try
+                    {
+
+                        if (!File.Exists(VanillaPath + "/font/" + FileName))
                         {
-                            p2taAPI.Convert(armor);
-                            File.Copy(armor + ".rep", TextureBase + "/environment/" + FileName.Replace(".png", ".tga"), true);
-                            sucCount++;
-                            Console.WriteLine($"[ConvertAPI - Info] 成功 {armor}");
+                            FileName = rAPI.Convert(FileName);
                         }
-                        //Console.WriteLine(ex);
+                        File.Copy(armor, VanillaPath + "/font/" + FileName, true);
+                        sucCount++;
+                        Console.WriteLine($"[ConvertAPI - Info] 成功 {armor}");
                     }
                     catch (Exception ex)
                     {
@@ -214,16 +226,32 @@ namespace RE_JavaTexturePackage2NBTP
                     string FileName = Path.GetFileName(ui);
                     if (FileName == "icons.png")
                     {
-                        iconAPI.Convert(ui, TextureBase + "/ui/",VanillaBasePath);
+                        iconAPI.Convert(ui, TextureBase + "/ui/", VanillaBasePath);
                         Console.WriteLine($"[ConvertAPI - Info] 成功 {ui}");
                         sucCount++;
                     }
                     else if (FileName == "widgets.png")
                     {
-                        widgetAPI.Convert(ui,TextureBase + "/ui/");
+                        widgetAPI.Convert(ui, TextureBase + "/ui/");
                         Console.WriteLine($"[ConvertAPI - Info] 成功 {ui}");
                         sucCount++;
                     }
+                }
+
+                if (Directory.Exists(currentPackage.TextureFolder + "/gui/title/"))
+                {
+                    if (Directory.Exists(currentPackage.TextureFolder + "/gui/title/background/"))
+                    {
+                        foreach (string file in Directory.GetFiles(currentPackage.TextureFolder + "/gui/title/background/"))
+                        {
+                            string target = TextureBase + "/ui/" + Path.GetFileName(file);
+                            if (File.Exists(target))
+                            {
+                                File.Copy(file, target,true);
+                            }
+                        }
+                    }
+
                 }
             }
 
@@ -240,7 +268,7 @@ namespace RE_JavaTexturePackage2NBTP
 
                     foreach (string file in Directory.GetFiles(dire))
                     {
-                        string FileName = Path.GetFileName(file).Replace(".ogg",".fsb");
+                        string FileName = Path.GetFileName(file).Replace(".ogg", ".fsb");
                         if (!File.Exists(CurrentFolder + "/" + FileName))
                         {
                             failCount++;
