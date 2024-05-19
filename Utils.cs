@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -10,6 +11,31 @@ namespace RE_JavaTexturePackage2NBTP
 {
     internal class Utils
     {
+        public static string GetGamePath()
+        {
+			RegistryKey key = null;
+			try
+			{
+				key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\MCLauncher", false);
+			}
+			finally
+			{
+				if (key == null)
+				{
+					key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\PC4399_MCLauncher", false);
+				}
+			}
+            if (key == null)
+            {
+                key.Close();
+                return null;
+            }
+            string path = key.GetValue("MinecraftBENeteasePath")?.ToString();
+            key.Close();
+            if (string.IsNullOrEmpty(path)) return null;
+            else return path + "\\windowsmc";
+		}
+
         public static string CalculateMD5(object obj)
         {
             byte[] bytes;
