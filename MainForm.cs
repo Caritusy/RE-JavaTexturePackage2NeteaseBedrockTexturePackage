@@ -25,20 +25,20 @@ namespace RE_JavaTexturePackage2NBTP
             listBox1.DataSource = null;
             listBox1.DataSource = JavaPackages;
             listBox1.DisplayMember = "Name";
-            listBox1.SelectedIndex = 0;
+            listBox1.SelectedIndex = -1;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             using (var dialog = new FolderBrowserDialog())
             {
-                // ÉèÖÃ¶Ô»°¿òµÄ±êÌâ
-                dialog.Description = "ÇëÑ¡ÔñÎÄ¼ş¼Ğ";
+                // è®¾ç½®å¯¹è¯æ¡†çš„æ ‡é¢˜
+                dialog.Description = "è¯·é€‰æ‹©æ–‡ä»¶å¤¹";
 
-                // Èç¹ûÓÃ»§µã»÷ÁË¡°È·¶¨¡±°´Å¥
+                // å¦‚æœç”¨æˆ·ç‚¹å‡»äº†â€œç¡®å®šâ€æŒ‰é’®
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    // ·µ»ØÓÃ»§Ñ¡ÔñµÄÎÄ¼ş¼ĞÂ·¾¶
+                    // è¿”å›ç”¨æˆ·é€‰æ‹©çš„æ–‡ä»¶å¤¹è·¯å¾„
                     textBox1.Text = dialog.SelectedPath;
                 }
             }
@@ -48,21 +48,28 @@ namespace RE_JavaTexturePackage2NBTP
         {
             using (var dialog = new OpenFileDialog())
             {
-                // ÉèÖÃ¶Ô»°¿òµÄ±êÌâ
-                dialog.Title = "ÇëÑ¡ÔñJava²ÄÖÊ°ü/ÒôĞ§°üÑ¹Ëõ°ü£¨¿ÉÒÔ¶àÑ¡£©";
+                // è®¾ç½®å¯¹è¯æ¡†çš„æ ‡é¢˜
+                dialog.Title = "è¯·é€‰æ‹©Javaæè´¨åŒ…/éŸ³æ•ˆåŒ…å‹ç¼©åŒ…ï¼ˆå¯ä»¥å¤šé€‰ï¼‰";
 
-                // ÉèÖÃ¶Ô»°¿òµÄ¹ıÂËÆ÷£¬Ö»ÔÊĞíÑ¡ÔñÌØ¶¨ÀàĞÍµÄÎÄ¼ş
-                dialog.Filter = "Ñ¹ËõÎÄ¼ş (*.zip)|*.zip|ÈÎÒâÎÄ¼ş (*.*)|*.*";
+                // è®¾ç½®å¯¹è¯æ¡†çš„è¿‡æ»¤å™¨ï¼Œåªå…è®¸é€‰æ‹©ç‰¹å®šç±»å‹çš„æ–‡ä»¶
+                dialog.Filter = "å‹ç¼©æ–‡ä»¶ (*.zip)|*.zip|ä»»æ„æ–‡ä»¶ (*.*)|*.*";
 
                 dialog.Multiselect = true;
 
-                // Èç¹ûÓÃ»§µã»÷ÁË¡°È·¶¨¡±°´Å¥
+                // å¦‚æœç”¨æˆ·ç‚¹å‡»äº†â€œç¡®å®šâ€æŒ‰é’®
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    // ·µ»ØÓÃ»§Ñ¡ÔñµÄÎÄ¼şÂ·¾¶
+                    // è¿”å›ç”¨æˆ·é€‰æ‹©çš„æ–‡ä»¶è·¯å¾„
                     foreach (string file in dialog.FileNames)
                     {
-                        JavaPackages.Add(new JavaPackage(file));
+                        JavaPackage rFile = new JavaPackage(file);
+doExtract: ;
+                        if (!rFile.Extract())
+                        {
+                            goto doExtract;
+                        }
+                        
+                        JavaPackages.Add(rFile);
                     }
                     Refresh();
                 }
@@ -73,10 +80,10 @@ namespace RE_JavaTexturePackage2NBTP
         {
             if (listBox1.SelectedIndex == -1)
             {
-                MessageBox.Show("Ñ¡ÔñÏîÎª¿Õ", "´íÎó", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("é€‰æ‹©é¡¹ä¸ºç©º", "é”™è¯¯", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            DialogResult result = MessageBox.Show($"ÄãÈ·¶¨ÒªÉ¾³ı{JavaPackages[listBox1.SelectedIndex].Name}Âğ£¿", "È·ÈÏ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show($"ä½ ç¡®å®šè¦åˆ é™¤{JavaPackages[listBox1.SelectedIndex].Name}å—ï¼Ÿ", "ç¡®è®¤", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 JavaPackages.RemoveAt(listBox1.SelectedIndex);
@@ -136,7 +143,7 @@ namespace RE_JavaTexturePackage2NBTP
                     totalsuc += c.sucCount;
                     totalfail += c.failCount;
                 }
-                MessageBox.Show($"×ª»»Íê³É£¬×Ü¼Æ³É¹¦{totalsuc}£¬×Ü¼ÆÊ§°Ü{totalfail}","Íê³É",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show($"è½¬æ¢å®Œæˆï¼Œæ€»è®¡æˆåŠŸ{totalsuc}ï¼Œæ€»è®¡å¤±è´¥{totalfail}","å®Œæˆ",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -161,7 +168,7 @@ namespace RE_JavaTexturePackage2NBTP
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            // ´¦ÀíÍÏ·ÅµÄÎÄ¼ş
+            // å¤„ç†æ‹–æ”¾çš„æ–‡ä»¶
             foreach (string file in files)
             {
                 if (ZipHelper.IsValid(file)) continue;

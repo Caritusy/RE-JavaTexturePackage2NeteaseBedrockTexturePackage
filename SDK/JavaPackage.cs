@@ -25,17 +25,15 @@ namespace RE_JavaTexturePackage2NBTP.SDK
             Path = path;
             MD5 = Utils.CalculateMD5(Path); //防重复用计算MD5(虽然好像没啥用)
             TempPath = $"{System.IO.Path.GetTempPath()}/REJTP2BTP-{MD5}/";
-            ZipHelper.Extract(Path, TempPath);
-            packInfo = JsonConvert.DeserializeObject<PackInfo>(File.ReadAllText($"{TempPath}/pack.mcmeta"));
-            IsSound = Directory.Exists(SoundFolder);
-            IsTexture = Directory.Exists(TextureFolder);
+
+
         }
 
         public string Path { get; private set; }
         public string TempPath { get; private set; }
         public string MD5 { get; private set; }
         public PackInfo packInfo { get; private set; }
-
+        
         public bool IsSound { get; private set; }
         public bool IsTexture { get; private set; }
 
@@ -66,13 +64,33 @@ namespace RE_JavaTexturePackage2NBTP.SDK
                 return "(未知)";
             }
         }
-
+    
         public string Name //名字
         {
             get
             {
                 return STName + System.IO.Path.GetFileName(Path);
             }
+        }
+
+        public bool Extract()
+        {
+            try
+            {
+                ZipHelper.Extract(Path, TempPath);
+                packInfo = JsonConvert.DeserializeObject<PackInfo>(File.ReadAllText($"{TempPath}/pack.mcmeta"));
+                IsSound = Directory.Exists(SoundFolder);
+                IsTexture = Directory.Exists(TextureFolder);
+                Console.WriteLine($"[JavaPackage - Info] 成功解压{Utils.GetFileNameFromPath(Path)}");
+                return true;
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[JavaPackage - Error] 在解压{Utils.GetFileNameFromPath(Path)}的过程中出现错误: {e.Message}, 重试中...");
+                return false;
+            }
+            
         }
 
     }
