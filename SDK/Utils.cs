@@ -25,11 +25,13 @@ namespace RE_JavaTexturePackage2NBTP.SDK
                     key = Registry.CurrentUser.OpenSubKey("Software\\Netease\\PC4399_MCLauncher", false);
                 }
             }
+
             if (key == null)
             {
                 key.Close();
                 return null;
             }
+
             string path = key.GetValue("MinecraftBENeteasePath")?.ToString();
             key.Close();
             if (string.IsNullOrEmpty(path)) return null;
@@ -59,6 +61,7 @@ namespace RE_JavaTexturePackage2NBTP.SDK
                 {
                     sb.Append(hashBytes[i].ToString("x2"));
                 }
+
                 return sb.ToString();
             }
         }
@@ -80,10 +83,13 @@ namespace RE_JavaTexturePackage2NBTP.SDK
                     writer.Write((short)bitmap.Width); // Image width
                     writer.Write((short)bitmap.Height); // Image height
                     writer.Write((byte)32); // Pixel depth (32 bits per pixel)
-                    writer.Write((byte)8); // Image descriptor (bits 0-3: attribute bits per pixel, bits 4-5: reserved, bit 6: origin in lower left corner, bit 7: alpha bits in pixel)
+                    writer.Write(
+                        (byte)8); // Image descriptor (bits 0-3: attribute bits per pixel, bits 4-5: reserved, bit 6: origin in lower left corner, bit 7: alpha bits in pixel)
 
                     // Write pixel data
-                    for (int y = bitmap.Height - 1; y >= 0; y--) // Reverse iteration to match TGA's bottom-to-top row order
+                    for (int y = bitmap.Height - 1;
+                         y >= 0;
+                         y--) // Reverse iteration to match TGA's bottom-to-top row order
                     {
                         for (int x = 0; x < bitmap.Width; x++)
                         {
@@ -98,6 +104,23 @@ namespace RE_JavaTexturePackage2NBTP.SDK
             }
         }
 
-        
+        public static string GetFileNameFromPath(string path)
+        {
+
+            int lastIndex = path.LastIndexOf('\\');
+            if (lastIndex == -1)
+            {
+                lastIndex = path.LastIndexOf('/');
+            }
+
+            if (lastIndex == -1)
+            {
+                return path; // 如果没有路径分隔符，则返回整个字符串作为文件名
+            }
+
+            return path.Substring(lastIndex + 1);
+
+
+        }
     }
 }
